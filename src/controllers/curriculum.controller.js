@@ -1,5 +1,6 @@
-const { EErrorCode, Error, Result } = require('../utils/result/result');
+const { EErrorCode, Error, Result } = require('../utils/content/result');
 const { MailDetails, MailSmtp, MailAttachment } = require('../utils/mail/mailSmtp');
+const { Email } = require('../utils/content/validators');
 const { IncomingForm } = require('formidable');
 
 const controllerCurriculum = { };
@@ -42,6 +43,7 @@ function validatePost(fields, files) {
   if (!fields.websiteUrl) return new Error(EErrorCode.InvalidParams, 'Parameter websiteUrl is required');
   if (!fields.name) return new Error(EErrorCode.InvalidParams, 'Parameter name is required');
   if (!fields.email) return new Error(EErrorCode.InvalidParams, 'Parameter email is required');
+  if (!Email.valid(fields.email)) return new Error(EErrorCode.InvalidParams, 'Parameter email is invalid');
   if (!fields.message) return new Error(EErrorCode.InvalidParams, 'Parameter message is required');
   if (!files.curriculum) return new Error(EErrorCode.InvalidParams, 'Curriculum file is required');
   const { name } = files.curriculum;
